@@ -1,0 +1,12 @@
+[package]
+name = "http-ytproxy"
+version = "0.1.0"
+edition = "2021"
+
+
+[dependencies]
+third-wheel = "0.6"
+argh = "0.1"
+
+[dependencies.tokio]
+version = "1"
