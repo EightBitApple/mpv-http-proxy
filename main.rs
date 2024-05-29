@@ -12,11 +12,11 @@ struct StartMitm {
     port: u16,
 
     /// pem file for self-signed certificate authority certificate
-    #[argh(option, short = 'c', default = "\"ca/ca_certs/cert.pem\".to_string()")]
+    #[argh(option, short = 'c', default = "\"cert.pem\".to_string()")]
     cert_file: String,
 
     /// pem file for private signing key for the certificate authority
-    #[argh(option, short = 'k', default = "\"ca/ca_certs/key.pem\".to_string()")]
+    #[argh(option, short = 'k', default = "\"key.pem\".to_string()")]
     key_file: String,
 
     /// range header chunk
