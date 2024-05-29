@@ -1,12 +1,10 @@
 use argh::FromArgs;
-use third_wheel::hyper::Request;
+use third_wheel::hyper::{Request, Body};
 use third_wheel::hyper::http::HeaderValue;
-use hyper::service::Service;
-
-use hyper::Body;
+use third_wheel::hyper::service::Service;
 use third_wheel::*;
 
-/// Run a TLS mitm proxy that does no modification to the traffic
+/// Run a TLS mitm proxy that modifies Range header to be http_chunk_size bytes.
 #[derive(FromArgs)]
 struct StartMitm {
     /// port to bind proxy to
@@ -21,13 +19,13 @@ struct StartMitm {
     #[argh(option, short = 'k', default = "\"ca/ca_certs/key.pem\".to_string()")]
     key_file: String,
 
-    /// modify range header
+    /// range header chunk
     #[argh(option, short = 'r', default = "10485760")]
     http_chunk_size: u64,
 }
 
 
-fn mitm(mut req: Request<Body>, mut third_wheel: ThirdWheel, http_chunk_size:u64) -> <ThirdWheel as Service<third_wheel::hyper::Request<Body>>>::Future {
+fn mitm(mut req: Request<Body>, mut third_wheel: ThirdWheel, http_chunk_size:u64) -> <ThirdWheel as Service<Request<Body>>>::Future {
     //println!("req: {}", req.uri());
     let hdr = req.headers_mut();
     if let Some(val) = hdr.get("Range") {
