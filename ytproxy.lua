@@ -1,6 +1,6 @@
 local function init()
     local url = mp.get_property("stream-open-filename")
-    -- check for youtu substr
+    -- check for youtube link
     if url:find("^https:") == nil or url:find("youtu") == nil then
         return
     end
@@ -12,7 +12,7 @@ local function init()
 
     -- launch mitm proxy
     local args = {
-        mp.get_script_directory() .. "/trivial_mitm",
+        mp.get_script_directory() .. "/http-ytproxy",
         "-c", mp.get_script_directory() .. "/cert.pem",
         "-k", mp.get_script_directory() .. "/key.pem",
         "-r", "10485760", -- range modification
