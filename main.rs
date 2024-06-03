@@ -33,10 +33,11 @@ fn mitm(mut req: Request<Body>, mut third_wheel: ThirdWheel, http_chunk_size:u64
         //println!("Range: {}", range);
         if range.starts_with("bytes=") {
             if let Some((p1, _p2)) = range[6..].split_once('-') {
-                let start = p1.parse::<u64>().unwrap();
-                let newrange = &(String::new()+"bytes="+&start.to_string()+"-"+&(start+http_chunk_size).to_string())[..];
-                //println!("-> {}",newrange);
-                hdr.insert("Range", HeaderValue::from_str( newrange).unwrap());
+                if let Ok(start) = p1.parse::<u64>() {
+                    let newrange = format!("bytes={}-{}", start, start + http_chunk_size);
+                    //println!("-> {}",newrange);
+                    hdr.insert("Range", HeaderValue::from_str(&newrange).unwrap());
+                }
             }
         }
     }
